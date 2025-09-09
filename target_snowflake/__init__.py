@@ -3,6 +3,9 @@ from singer import utils
 from target_postgres import target_tools
 from target_redshift.s3 import S3
 
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization
+
 from target_snowflake.connection import connect
 from target_snowflake.snowflake import SnowflakeTarget
 
@@ -13,14 +16,21 @@ REQUIRED_CONFIG_KEYS = [
     'snowflake_warehouse',
     'snowflake_database',
     'snowflake_username',
-    'snowflake_password'
+    'snowflake_pkb'
 ]
 
 
 def main(config, input_stream=None):
+    pkb = config.get('snowflake_pkb')
+    snowflake_private_key = serialization.load_pem_private_key(pkb, None, default_backend()).private_bytes(
+        encoding=serialization.Encoding.DER,
+        format=serialization.PrivateFormat.PKCS8,
+        encryption_algorithm=serialization.NoEncryption()
+    )
+
     with connect(
             user=config.get('snowflake_username'),
-            password=config.get('snowflake_password'),
+            private_key=snowflake_private_key,
             role=config.get('snowflake_role'),
             authenticator=config.get('snowflake_authenticator', 'snowflake'),
             account=config.get('snowflake_account'),

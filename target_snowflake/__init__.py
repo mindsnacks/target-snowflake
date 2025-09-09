@@ -21,7 +21,7 @@ REQUIRED_CONFIG_KEYS = [
 
 
 def main(config, input_stream=None):
-    pkb = config.get('snowflake_pkb')
+    pkb = config.get('snowflake_pkb').encode('utf-8')
     snowflake_private_key = serialization.load_pem_private_key(pkb, None, default_backend()).private_bytes(
         encoding=serialization.Encoding.DER,
         format=serialization.PrivateFormat.PKCS8,

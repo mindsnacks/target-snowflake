@@ -12,7 +12,7 @@ setup(
     name='target-snowflake',
     url='https://github.com/datamill-co/target-snowflake',
     author='datamill',
-    version="0.2.4",
+    version="0.2.5",
     description='Singer.io target for loading data into Snowflake',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -22,8 +22,8 @@ setup(
         'singer-python==5.9.0',
         'singer-target-postgres==0.2.4',
         'target-redshift==0.2.4',
-        'botocore<1.13.0,>=1.12.253',
-        'snowflake-connector-python==2.2.5'
+        'botocore==1.40.26',
+        'snowflake-connector-python==3.17.3'
     ],
     setup_requires=[
         "pytest-runner"
